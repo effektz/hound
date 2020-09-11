@@ -4,6 +4,13 @@ defmodule Hound.Helpers.Log do
   import Hound.RequestUtils
   require Hound.NotSupportedError
 
+  def fetch_perf() do
+    fail_if_webdriver_selenium("fetch_log()")
+
+    session_id = Hound.current_session_id
+    make_req(:post, "session/#{session_id}/log", %{type: "performance"})
+  end
+
   @doc """
   Fetches console.log() from the browser as a single string of log-lines.
   """
@@ -29,9 +36,9 @@ defmodule Hound.Helpers.Log do
     Hound.NotSupportedError.raise_for(%{driver: "selenium", browser: "firefox"}, function)
   end
 
-  defp get_browser_log() do
+  defp get_browser_log(type \\ "browser") do
     session_id = Hound.current_session_id
-    make_req(:post, "session/#{session_id}/log", %{type: "browser"})
+    make_req(:post, "session/#{session_id}/log", %{type: type})
   end
 
   defp is_error(map) do

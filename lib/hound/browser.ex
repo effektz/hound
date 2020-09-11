@@ -16,7 +16,7 @@ defmodule Hound.Browser do
       user_agent(opts[:user_agent] || browser.default_user_agent)
       |> Hound.Metadata.append(opts[:metadata])
 
-    capabilities = %{browserName: browser_name}
+    capabilities = %{browserName: browser_name, loggingPrefs: %{performance: "ALL"}}
     default_capabilities = browser.default_capabilities(user_agent)
     additional_capabilities = opts[:additional_capabilities] || %{}
 
